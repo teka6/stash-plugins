@@ -35,7 +35,10 @@ for dir in */; do
     done
     [[ -z "$yml" ]] && continue
 
-    id="$dir"
+    # Plugin ID = YAML filename without extension (matches Stash's internal ID).
+    # Stash derives plugin IDs from the manifest filename, so the registry must
+    # use the same id or updates don't match the installed plugin.
+    id="$(basename "$yml" .yml)"
     # derive version and name from manifest
     name="$(grep -E '^name:' "$yml" | head -1 | sed -E 's/^name:[[:space:]]*//; s/^"(.*)"$/\1/')"
     version="$(grep -E '^version:' "$yml" | head -1 | sed -E 's/^version:[[:space:]]*//; s/^"(.*)"$/\1/')"

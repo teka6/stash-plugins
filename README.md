@@ -28,9 +28,11 @@ See [`favsync/README.md`](./favsync/README.md) for details.
 
 ### Performer Tools
 
-Performer metadata enrichment and favorites sync with a UI overlay.
+Performer metadata enrichment, favorites sync across Stash/StashDB/Whisparr via TPDB ImportLists, and in-UI scene-count badges for performer and studio pages. Complementary to FavSync (different approach to Whisparr integration, richer metadata features).
 
-See [`performer-plugin/README.md`](./performer-plugin/README.md) for details.
+Tasks: Performer Status, Sync Favorites, Sync StashDB Only, Enrich Performers, Enrich All Favorites, plus UI-driven scene-count endpoints.
+
+See [`performer_tools/README.md`](./performer_tools/README.md) for details, including a FavSync-vs-Performer-Tools comparison matrix.
 
 ## Development
 

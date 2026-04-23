@@ -4,8 +4,8 @@ description: >
   On favorite toggle in Stash, pushes to StashDB (favoritePerformer mutation)
   and sets Whisparr performer monitored flag to match.
   Tasks for one-shot reconcile and dry-run reporting.
-version: 0.1.0
-url: https://github.com/stashapp/stash
+version: 0.1.1
+url: https://github.com/teka6/stash-plugins
 ui:
   requires: []
 

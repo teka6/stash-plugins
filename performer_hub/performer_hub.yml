@@ -1,0 +1,118 @@
+name: Performer Hub
+description: >
+  Unified performer favorites sync across Stash / StashDB / Whisparr,
+  StashDB metadata enrichment (gap-fill only), and in-UI scene-count badges.
+  Successor to FavSync + Performer Tools. Python stdlib only, no external deps.
+version: 0.2.0
+url: https://github.com/teka6/stash-plugins
+
+exec:
+  - python3
+  - "{pluginDir}/performer_hub.py"
+interface: raw
+errLog: warning
+
+ui:
+  requires: []
+  javascript:
+    - ui.js
+
+hooks:
+  - name: Sync on performer favorite toggle
+    description: "[Sync] Auto-sync Stash favorite changes to StashDB + Whisparr monitored flag"
+    triggeredBy:
+      - Performer.Update.Post
+
+tasks:
+  - name: "Hub: Status"
+    description: "Show performer counts and connection health across Stash, StashDB, and Whisparr"
+    defaultArgs:
+      mode: status
+
+  - name: "Sync: All Favorites"
+    description: "Union reconcile — Stash ∪ StashDB favorites, Whisparr monitored flag set to match"
+    defaultArgs:
+      mode: sync-all
+
+  - name: "Sync: Report Diffs (dry-run)"
+    description: "Report mismatches across Stash / StashDB / Whisparr without writing"
+    defaultArgs:
+      mode: sync-report
+
+  - name: "Sync: Monitor Whisparr (bulk)"
+    description: "Set every current favorite's matching Whisparr performer to monitored=true"
+    defaultArgs:
+      mode: sync-monitor-whisparr
+
+  - name: "Enrich: Missing Metadata"
+    description: "Gap-fill metadata from StashDB for performers without a StashDB UUID. Never overwrites existing fields."
+    defaultArgs:
+      mode: enrich
+
+  - name: "Enrich: All Favorites"
+    description: "Gap-fill metadata on all favorites, including those already linked to StashDB"
+    defaultArgs:
+      mode: enrich
+      allPerformers: "true"
+
+  # Internal UI callbacks — triggered by ui.js, not meant for manual invocation
+  - name: "UI: Stashbox Performer Scene Count"
+    description: "Called by the UI overlay. Returns local/stashbox scene counts for the performer badge."
+    defaultArgs:
+      mode: ui-performer-scene-count
+      endpoint: null
+      api_key: null
+      stash_id: null
+
+  - name: "UI: Stashbox Studio Scene Count"
+    description: "Called by the UI overlay. Returns local/stashbox scene counts for the studio badge (honours include_subsidiary_studios)."
+    defaultArgs:
+      mode: ui-studio-scene-count
+      endpoint: null
+      api_key: null
+      stash_id: null
+
+settings:
+  # --- Connections ---
+  stashdb_api_key:
+    displayName: "[Connections] StashDB API Key"
+    description: "API key for stashdb.org (same one configured in Stash's stash-box settings)"
+    type: STRING
+  whisparr_url:
+    displayName: "[Connections] Whisparr URL"
+    description: "Whisparr base URL, e.g. https://whisparr.example.com (no trailing slash)"
+    type: STRING
+  whisparr_api_key:
+    displayName: "[Connections] Whisparr API Key"
+    description: "Whisparr API key"
+    type: STRING
+
+  # --- Sync behavior ---
+  dry_run_sync:
+    displayName: "[Sync] Dry Run"
+    description: "Log sync actions without writing. Applies to the hook and all Sync tasks."
+    type: BOOLEAN
+
+  # --- Enrich behavior ---
+  dry_run_enrich:
+    displayName: "[Enrich] Dry Run"
+    description: "Log enrich actions without writing to Stash. Applies to Enrich tasks."
+    type: BOOLEAN
+  rate_limit_seconds:
+    displayName: "[Enrich] StashDB Rate Limit (seconds)"
+    description: "Delay between StashDB API calls during enrich (default: 2)"
+    type: NUMBER
+
+  # --- UI overlay ---
+  scene_count_performers:
+    displayName: "[UI] Scene count on performer pages"
+    description: "Show local/stashbox scene count badge next to StashDB IDs on performer pages"
+    type: BOOLEAN
+  scene_count_studios:
+    displayName: "[UI] Scene count on studio pages"
+    description: "Show local/stashbox scene count badge next to StashDB IDs on studio pages"
+    type: BOOLEAN
+  include_subsidiary_studios:
+    displayName: "[UI] Include subsidiary studios in count"
+    description: "When counting studio scenes, include scenes from child studios"
+    type: BOOLEAN

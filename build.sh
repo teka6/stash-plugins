@@ -56,7 +56,8 @@ for dir in */; do
         -x "__pycache__/*" -x "*.pyc" -x ".DS_Store" -x ".git/*")
 
     sha256="$(sha256sum "$OUT_DIR/$id.zip" | awk '{print $1}')"
-    date="$(date -u +%Y-%m-%d)"
+    # Stash parses date with format "2006-01-02 15:04:05" (Go reference time).
+    date="$(date -u '+%Y-%m-%d %H:%M:%S')"
 
     # append entry
     cat >> "$OUT_DIR/index.yml" << ENTRY

@@ -1,7 +1,7 @@
 name: Performer Tools
 description: Sync favorites across Stash/StashDB/Whisparr, enrich performer metadata from StashDB.
 version: 1.1.0
-url: https://github.com/thenik/stash-performer-tools
+url: https://github.com/teka6/stash-plugins
 interface: raw
 exec:
   - python3

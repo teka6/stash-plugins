@@ -15,24 +15,17 @@ Then **Available Plugins** lists the plugins below. Install the ones you want, r
 
 ## Plugins
 
-### FavSync — Stash ↔ StashDB ↔ Whisparr
+### Performer Hub
 
-Keeps performer favorites in sync across all three systems. Native Stash plugin, no external dependencies beyond Python 3.
+Unified plugin for performer favorites sync (Stash ↔ StashDB ↔ Whisparr via monitor-flag), StashDB metadata gap-fill, and in-UI scene-count badges. Native Stash plugin with zero external dependencies — Python 3 stdlib + vanilla JavaScript.
 
-- **Hook** on `Performer.Update.Post` — auto-sync favorite toggles
-- **Task** `Sync All Favorites` — union reconcile
-- **Task** `Report Diffs (dry-run)` — diagnose mismatches
-- **Task** `Monitor All Favs in Whisparr (bulk)` — bulk set Whisparr performer monitored flag
+- **Hook** on `Performer.Update.Post` — auto-sync favorite toggles to StashDB and Whisparr
+- **Tasks**: `Hub: Status`, `Sync: All Favorites`, `Sync: Report Diffs (dry-run)`, `Sync: Monitor Whisparr (bulk)`, `Enrich: Missing Metadata`, `Enrich: All Favorites`
+- **UI overlay**: `local / stashbox` scene-count badges on performer and studio pages (opt-in per type)
 
-See [`favsync/README.md`](./favsync/README.md) for details.
+See [`performer_hub/README.md`](./performer_hub/README.md) for full details.
 
-### Performer Tools
-
-Performer metadata enrichment, favorites sync across Stash/StashDB/Whisparr via TPDB ImportLists, and in-UI scene-count badges for performer and studio pages. Complementary to FavSync (different approach to Whisparr integration, richer metadata features).
-
-Tasks: Performer Status, Sync Favorites, Sync StashDB Only, Enrich Performers, Enrich All Favorites, plus UI-driven scene-count endpoints.
-
-See [`performer_tools/README.md`](./performer_tools/README.md) for details, including a FavSync-vs-Performer-Tools comparison matrix.
+Performer Hub is the successor to the previous `favsync` and `performer_tools` plugins, which were merged into a single dependency-free plugin. If you previously had either installed, uninstall it before enabling Performer Hub to avoid duplicate sync writes.
 
 ## Development
 
